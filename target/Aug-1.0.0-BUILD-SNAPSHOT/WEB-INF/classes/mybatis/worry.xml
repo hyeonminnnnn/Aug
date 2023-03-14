@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="worry">
+	<select id="list" resultType="Worry">
+		SELECT *
+		FROM worry
+	</select>
+	
+	<insert id="write">
+		INSERT INTO worry(title, reg_date, contents, views)
+		VALUES(#{title}, NOW(), #{contents}, #{views})
+	</insert>
+</mapper>

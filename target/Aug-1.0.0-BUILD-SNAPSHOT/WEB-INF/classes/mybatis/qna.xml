@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="qna">
+	<select id="list" resultType="Qna">
+		SELECT qna.*, users.nickname 
+		FROM qna
+		LEFT JOIN users ON qna.users_id = users.id
+	</select>
+	
+	<insert id="write">
+		INSERT INTO qna(title, reg_date, users_id, contents)
+		VALUES(#{title}, NOW(), #{usersId}, #{contents})
+	</insert>
+</mapper>

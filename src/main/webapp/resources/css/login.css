@@ -1,0 +1,146 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,0) inset;
+	box-shadow: 0 0 0 1000px rgba(0,0,0,0) inset;
+}
+
+form{
+	padding:10px;
+}
+
+.logo{
+	position: relative;
+	top:30px;
+}
+
+.login{
+	position: relative;
+	top: 20px;
+}
+
+.input-box{
+	position: relative;
+	margin:10px 0;
+	margin-bottom: 40px;
+	opacity:70%;
+}
+
+.input-box > input{
+	background:transparent;
+    border:none;
+    border-bottom: solid 1px rgba(100, 100, 100, 0.55);
+    padding:20px 0px 5px 0px;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size:12pt;
+	width:500px;
+}
+
+
+input::placeholder{
+	color:transparent;
+}
+
+input:placeholder-shown + label{
+	color:#aaa;
+	font-size:12pt;
+	font-family: 'Noto Sans KR', sans-serif;
+	top:15px;
+}
+
+input:focus + label, label{
+	color:#ded6f3;
+	font-size:10pt;
+	font-family: 'Noto Sans KR', sans-serif;
+	pointer-events:none;
+	position: absolute;
+	left:710px;
+	top:0px;
+	transition: all 0.2s ease;
+}
+
+input:focus, input:not(:placeholder-shown){
+	border-bottom: solid 1px rgba(100, 100, 100, 0.55);
+	outline: none;
+}
+
+#hi{
+	font-size: 45px;
+	margin-bottom: -5px;
+	opacity:90%;
+}
+
+#good{
+	font-size: 20px;
+	font-weight:lighter;
+	opacity: 80%;
+}
+
+.title{
+	margin-top: 60px;
+}
+
+.login_warn{
+	position: relative;
+	margin-bottom:15px;
+	color:#ff0000;
+	left:-115px;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.pulse{
+	width:500px;
+	height:50px;
+	color:white;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 17px;
+	text-align: center;
+	background: #9080ED; 
+	border-radius: 12px;
+	border: none;
+	margin-top:20px;
+}
+
+.pulse:hover {
+      box-shadow: 0 0 0 18px transparent;
+      animation: pulse 1s;
+    }
+
+@keyframes pulse {
+  from {
+    box-shadow: 0 0 0 0  #9080ED;
+  }
+}
+
+.sign{
+	margin-top: 50px;
+	color:#aaa;
+	opacity:80%;
+}
+
+.sign a{
+	margin-left: 10px;
+	text-decoration: none;
+	color:white;
+	opacity:70%;
+}
+
+.sign a:hover {
+  -webkit-mask-image: linear-gradient(-75deg, rgba(0, 0, 0, .2) 30%, #000 50%, rgba(0, 0, 0, .2) 70%);
+  mask-image: linear-gradient(-75deg, rgba(0, 0, 0, .2) 30%, #000 50%, rgba(0, 0, 0, .2) 70%);
+  -webkit-mask-size: 200%;
+  mask-size: 200%;
+  animation: shine 2s infinite;
+  transition: 0.35s;
+}
+
+@keyframes shine {
+  from {
+    -webkit-mask-position: 150%;
+  }
+  to {
+    -webkit-mask-position: -50%;
+  }
+}

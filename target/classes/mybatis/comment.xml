@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="comment">
+
+	<select id="clist" resultType="Comment">
+		SELECT comment.*, users.nickname
+		FROM comment
+		LEFT JOIN users ON comment.users_id = users.id
+		WHERE comment.id = #{comment.id}
+	</select>
+	
+	<insert id="write">
+		INSERT INTO comment(id, contents, users_id, reg_date)
+		VALUES(#{id}, #{contents}, #{usersId}, NOW())
+	</insert>
+	
+	
+	<delete id="delete">
+		DELETE FROM comment
+		WHERE cno = #{cno}
+	</delete>
+	
+	<select id="comIdChk" resultType="String">
+		SELECT users_id, users.grade
+		FROM comment
+		LEFT JOIN users ON comment.users_id = users.id
+		WHERE cno = #{cno}
+	</select>
+</mapper>

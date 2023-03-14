@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="kr.ac.kopo.aug.model.Comm" alias="Comm" />
+		<typeAlias type="kr.ac.kopo.aug.model.Worry" alias="Worry" />
+		<typeAlias type="kr.ac.kopo.aug.model.Qna" alias="Qna" />
+		<typeAlias type="kr.ac.kopo.aug.model.Users" alias="Users" />
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="mybatis/comm.xml" />
+		<mapper resource="mybatis/worry.xml" />
+		<mapper resource="mybatis/qna.xml" />
+		<mapper resource="mybatis/users.xml" />
+	</mappers>
+</configuration>

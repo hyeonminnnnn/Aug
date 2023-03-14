@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	
+	<sql id="search">
+		SELECT board.*, users.nickname, users.grade, category.name, attach.id attach_id, filename, bo_id, COUNT(heart.board_id) heart, heart.board_id heart_bid
+		FROM board LEFT JOIN users ON board.users_id = users.id 
+		LEFT JOIN category ON board.category_id = category.cg_id
+		LEFT JOIN attach ON board.id = attach.bo_id
+		LEFT JOIN heart ON board.id = heart.board_id
+		<where>
+		<if test="search == 1">
+			title LIKE CONCAT(CONCAT('%', #{keyword}), '%')
+		</if>
+		
+		<if test="search == 2">
+			contents LIKE CONCAT(CONCAT('%', #{keyword}), '%')
+		</if>
+		
+		<if test="search == 3">
+			nickname LIKE CONCAT(CONCAT('%', #{keyword}), '%')
+		</if>
+		
+		<if test="cg == 1">
+			name LIKE '%10%'
+		</if>
+		
+		<if test="cg == 2">
+			name LIKE '%20%'
+		</if>
+		
+		<if test="cg == 3">
+			name LIKE '%30%'
+		</if>
+		
+		<if test="cg == 4">
+			name LIKE '%40%'
+		</if>
+		
+		<if test="cg == 5">
+			name LIKE '%50%'
+		</if>
+		
+		<if test="cg == 6">
+			name LIKE '%자유%'
+		</if>
+		
+		<if test="cg == 7">
+			name LIKE '%잡담%'
+		</if>
+		
+		<if test="cg == 8">
+			name LIKE '%질문%'
+		</if>
+		
+		<if test="cg == 9">
+			name LIKE '%고민%'
+		</if>
+		</where>
+		GROUP BY board.id
+		ORDER BY board.id DESC
+	</sql>
+	
+	<select id="total" resultType="Integer">
+		SELECT COUNT(*) FROM (<include refid="search"></include>) t1 WHERE board_id = 1
+	</select>
+	
+	<select id="totals" resultType="Integer">
+		SELECT COUNT(*) FROM (<include refid="search"></include>) t1 WHERE board_id = 2
+	</select>
+	
+	<select id="ntotal" resultType="Integer">
+		SELECT COUNT(*) FROM (<include refid="search"></include>) t1 WHERE board_id = 3
+	</select>
+	
+	<select id="mlist" resultMap="BoardMap">
+		SELECT t1.*
+		FROM (<include refid="search"></include>) t1
+		WHERE board_id = 1
+		ORDER BY id DESC
+		LIMIT ${offset}, ${perPage}
+	</select>
+	
+	<select id="clist" resultMap="BoardMap">
+		SELECT t1.*
+		FROM (<include refid="search"></include>) t1
+		WHERE board_id = 2
+		ORDER BY id DESC
+		LIMIT ${offset}, ${perPage}
+	</select>
+	
+	<select id="nlist" resultMap="BoardMap">
+		SELECT t1.*
+		FROM (<include refid="search"></include>) t1
+		WHERE board_id = 3
+		ORDER BY id DESC
+		LIMIT ${offset}, ${perPage}
+	</select>
+	
+	<insert id="mwrite">
+		INSERT INTO board (title, reg_date, category_id, contents, users_id, board_id)
+		VALUES(#{title}, NOW() <if test="categoryId == 0">, NULL</if> 
+		<if test="categoryId != 0">, #{categoryId}</if>, #{contents}, #{usersId}, 1)
+		
+		<selectKey keyProperty="id" resultType="Integer" order="AFTER">
+		 	SELECT LAST_INSERT_ID()
+		 </selectKey>
+	</insert>
+	
+	<insert id="cwrite">
+		INSERT INTO board (title, reg_date, category_id, contents, users_id, board_id)
+		VALUES(#{title}, NOW() <if test="categoryId == 0">, NULL</if> 
+		<if test="categoryId != 0">, #{categoryId}</if>, #{contents}, #{usersId}, 2)
+		
+		<selectKey keyProperty="id" resultType="Integer" order="AFTER">
+		 	SELECT LAST_INSERT_ID()
+		 </selectKey>
+	</insert>
+	
+	<insert id="nwrite">
+		INSERT INTO board (title, reg_date, category_id, contents, users_id, board_id)
+		VALUES(#{title}, NOW() <if test="categoryId == 0">, NULL</if> 
+		<if test="categoryId != 0">, #{categoryId}</if>, #{contents}, #{usersId}, 3)
+		
+		<selectKey keyProperty="id" resultType="Integer" order="AFTER">
+		 	SELECT LAST_INSERT_ID()
+		 </selectKey>
+	</insert>
+	
+	<resultMap type="Board" id="BoardMap" autoMapping="true">
+		<id column="id" property="id"/>
+		
+		<collection property="attachs" column="bo_id" ofType="Attach" javaType="ArrayList" autoMapping="true">
+			<id column="attach_id" property="id"/> 
+		</collection>
+	</resultMap>
+	
+	<select id="item" resultMap="BoardMap">
+		SELECT board.*, users.nickname, attach.id attach_id, filename, bo_id, category.name, COUNT(heart.board_id) heart,
+		heart.id heart_uid
+		FROM board
+		LEFT JOIN users ON board.users_id = users.id
+		LEFT JOIN attach ON board.id = attach.bo_id
+		LEFT JOIN category ON board.category_id = category.cg_id
+		LEFT JOIN heart ON board.id = heart.board_id
+		WHERE board.id=#{id}
+	</select>
+	
+	<update id="update">
+		UPDATE board
+		SET title = #{title}, contents = #{contents}, category_id = #{categoryId}
+		WHERE id=#{id}
+	</update>
+	
+	<update id="viewCount">
+		UPDATE board SET views = views +1
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM board
+		WHERE id=#{id}	
+	</delete>
+	
+	<update id="commentCount">
+		UPDATE board b
+		SET b.comment_count = (SELECT COUNT(cno) FROM comment WHERE id = #{id})
+		WHERE b.id = #{id}
+	</update>
+	
+	<insert id="heart_add">
+		INSERT INTO heart
+		VALUES(#{boardId}, #{usersId})
+	</insert>
+</mapper>
